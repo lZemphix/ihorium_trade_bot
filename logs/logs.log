@@ -1,0 +1,306 @@
+2024-08-26 19:22:30,189 - DEBUG - Using selector: EpollSelector
+29-08-2024 19:40:02, INFO, Start polling
+29-08-2024 19:40:02, INFO, Run polling for bot @bbit_signal_bot id=7273737726 - 'BBSignal'
+29-08-2024 19:40:12, INFO, Update id=851455633 is handled. Duration 375 ms by bot id=7273737726
+29-08-2024 19:40:24, INFO, Update id=851455634 is handled. Duration 241 ms by bot id=7273737726
+29-08-2024 19:40:30, INFO, Update id=851455635 is not handled. Duration 108 ms by bot id=7273737726
+29-08-2024 19:40:30, ERROR, Cause exception while process update id=851455635 by bot id=7273737726
+TypeError: Bot.get_kline() got an unexpected keyword argument 'interval'
+Traceback (most recent call last):
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 49, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/utils/middlewares.py", line 22, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 142, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 137, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 170, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 142, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 137, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 162, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/handlers/user_commands.py", line 40, in confirm
+    if bot.macd_rsi_strategy_trade() == 'buysignal':
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/script/client.py", line 98, in macd_rsi_strategy_trade
+    df = self.bot.get_kline_dataframe()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/script/client.py", line 80, in get_kline_dataframe
+    dataframe = pd.DataFrame(self.get_kline(interval=self.interval)['result']['list'])
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Bot.get_kline() got an unexpected keyword argument 'interval'
+29-08-2024 19:41:39, WARNING, Received SIGINT signal
+29-08-2024 19:41:39, INFO, Polling stopped for bot @bbit_signal_bot id=7273737726 - 'BBSignal'
+29-08-2024 19:41:39, INFO, Polling stopped
+29-08-2024 19:41:45, INFO, Start polling
+29-08-2024 19:41:45, INFO, Run polling for bot @bbit_signal_bot id=7273737726 - 'BBSignal'
+29-08-2024 19:41:49, INFO, Update id=851455636 is handled. Duration 298 ms by bot id=7273737726
+29-08-2024 19:41:50, INFO, Update id=851455637 is handled. Duration 121 ms by bot id=7273737726
+29-08-2024 19:41:56, INFO, Update id=851455638 is handled. Duration 107 ms by bot id=7273737726
+29-08-2024 19:42:02, INFO, Update id=851455639 is not handled. Duration 1205 ms by bot id=7273737726
+29-08-2024 19:42:02, ERROR, Cause exception while process update id=851455639 by bot id=7273737726
+InvalidRequestError: params error: intervalTime is invalid (ErrCode: 10001) (ErrTime: 14:42:02).
+Request → GET https://api.bybit.com/v5/market/kline: symbol=SOLUSDT.
+Traceback (most recent call last):
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 49, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/utils/middlewares.py", line 22, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 142, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 137, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 170, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 142, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 137, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/router.py", line 162, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/handlers/user_commands.py", line 40, in confirm
+    if bot.macd_rsi_strategy_trade() == 'buysignal':
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/script/client.py", line 99, in macd_rsi_strategy_trade
+    df = self.bot.get_kline_dataframe()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/script/client.py", line 80, in get_kline_dataframe
+    dataframe = pd.DataFrame(self.get_kline()['result']['list'])
+                             ^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/script/client.py", line 73, in get_kline
+    kline = self.client.get_kline(symbol=self.symbol)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/pybit/_v5_market.py", line 33, in get_kline
+    return self._submit_request(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/data/python/lib/python3.11/site-packages/pybit/_http_manager.py", line 379, in _submit_request
+    raise InvalidRequestError(
+pybit.exceptions.InvalidRequestError: params error: intervalTime is invalid (ErrCode: 10001) (ErrTime: 14:42:02).
+Request → GET https://api.bybit.com/v5/market/kline: symbol=SOLUSDT.
+29-08-2024 23:06:11, ERROR, Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+29-08-2024 23:06:11, WARNING, Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7273737726)
+29-08-2024 23:06:22, INFO, Connection established (tryings = 1, bot id = 7273737726)
+30-08-2024 22:33:32, ERROR, Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+30-08-2024 22:33:32, WARNING, Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7273737726)
+30-08-2024 22:33:43, INFO, Connection established (tryings = 1, bot id = 7273737726)
+01-09-2024 01:46:24, ERROR, Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+01-09-2024 01:46:24, WARNING, Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7273737726)
+01-09-2024 01:46:35, INFO, Connection established (tryings = 1, bot id = 7273737726)
+01-09-2024 14:56:46, ERROR, Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+01-09-2024 14:56:46, WARNING, Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7273737726)
+01-09-2024 14:56:57, INFO, Connection established (tryings = 1, bot id = 7273737726)
+02-09-2024 01:34:43, ERROR, Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+02-09-2024 01:34:43, WARNING, Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7273737726)
+02-09-2024 01:34:54, INFO, Connection established (tryings = 1, bot id = 7273737726)
+03-09-2024 12:15:37, INFO, Start polling
+03-09-2024 12:15:37, INFO, Run polling for bot @bbit_signal_bot id=7273737726 - 'BBSignal'
+03-09-2024 12:21:05, INFO, Update id=851455640 is handled. Duration 381 ms by bot id=7273737726
+03-09-2024 12:21:12, INFO, Update id=851455641 is handled. Duration 119 ms by bot id=7273737726
+03-09-2024 12:21:18, INFO, Update id=851455642 is not handled. Duration 110 ms by bot id=7273737726
+03-09-2024 12:21:18, ERROR, Cause exception while process update id=851455642 by bot id=7273737726
+TypeError: Strategy.macd_rsi_strategy_trade() missing 1 required positional argument: 'message'
+Traceback (most recent call last):
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 49, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/utils/middlewares.py", line 22, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 142, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 137, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 170, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 142, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 137, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 162, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/handlers/user_commands.py", line 40, in confirm
+    if bot.macd_rsi_strategy_trade() == 'buysignal':
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Strategy.macd_rsi_strategy_trade() missing 1 required positional argument: 'message'
+03-09-2024 12:32:29, WARNING, Received SIGINT signal
+03-09-2024 12:32:29, INFO, Polling stopped for bot @bbit_signal_bot id=7273737726 - 'BBSignal'
+03-09-2024 12:32:29, INFO, Polling stopped
+03-09-2024 12:32:34, INFO, Start polling
+03-09-2024 12:32:35, INFO, Run polling for bot @bbit_signal_bot id=7273737726 - 'BBSignal'
+03-09-2024 12:32:42, INFO, Update id=851455643 is handled. Duration 361 ms by bot id=7273737726
+03-09-2024 12:32:48, INFO, Update id=851455644 is handled. Duration 128 ms by bot id=7273737726
+03-09-2024 12:32:55, INFO, Update id=851455645 is not handled. Duration 181 ms by bot id=7273737726
+03-09-2024 12:32:55, ERROR, Cause exception while process update id=851455645 by bot id=7273737726
+TypeError: Strategy.test_strategy() takes 1 positional argument but 2 were given
+Traceback (most recent call last):
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 49, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/utils/middlewares.py", line 22, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 142, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 137, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 170, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 142, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 137, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 162, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/.venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/zemphix/Рабочий стол/pythonina/signal_bot/handlers/user_commands.py", line 40, in confirm
+    await bot.test_strategy(message)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Strategy.test_strategy() takes 1 positional argument but 2 were given
+03-09-2024 13:05:10, ERROR, Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+03-09-2024 13:05:10, WARNING, Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7273737726)
+03-09-2024 13:05:21, INFO, Connection established (tryings = 1, bot id = 7273737726)
+04-09-2024 01:56:20, ERROR, Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+04-09-2024 01:56:20, WARNING, Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7273737726)
+04-09-2024 01:56:31, INFO, Connection established (tryings = 1, bot id = 7273737726)
+04-09-2024 01:56:53, WARNING, Received SIGTERM signal
+04-09-2024 01:56:53, INFO, Polling stopped for bot @bbit_signal_bot id=7273737726 - 'BBSignal'
+04-09-2024 01:56:53, INFO, Polling stopped
