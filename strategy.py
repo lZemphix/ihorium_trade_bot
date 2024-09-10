@@ -45,7 +45,7 @@ class Grids:
     def write_grids(self):
         with open('src/grids.grd', 'w') as f:
             grid_num = 0
-            for grid in self.set_grids(grids=30)[0]:
+            for grid in self.set_grids(grids=28)[0]:
                 grid_num += 1
                 f.write(f'{str(grid)}' + '\n')
             
@@ -63,8 +63,8 @@ class Grids:
 grd = Grids()
 if __name__ == '__main__':
     try:
-        # Grids().write_grids()
+        Grids().write_grids()
         # Grids().test()
-        print(grd.find_closest_values(grd.test(), 128))
+        # print(grd.find_closest_values(grd.test(), 128))
     except Exception as e:
         print(e)

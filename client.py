@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 
-logging.basicConfig(level=logging.INFO, filename='logs/logs.log', filemode='a', format='%(asctime)s, %(levelname)s, %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
+logging.basicConfig(level=logging.INFO, filename='logs/logs.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
 
 load_dotenv()
 
@@ -50,7 +50,7 @@ class Client:
 
     def place_sell_order(self) -> FailedRequestError | None:
         try:
-            self.amount = (self.get_balance()).get('SOL')
+            self.amount = float(self.get_balance().get('SOL')[:5])
             order = self.client.place_order(
                 category='spot',
                 symbol=self.symbol,

@@ -2,5 +2,7 @@
     "symbol" : "SOLUSDT",
     "interval" : "5",
     "amountBuy" : 3.6,
-    "grids": 30
+    "buy_crypto" : false,
+    "grids": 28,
+    "send_notify": true
 }

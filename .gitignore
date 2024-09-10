@@ -1,4 +1,5 @@
 **/__pycache__
-__pycache__/
-logs.log
+__pycache__
+logs/logs.log
 .venv/
+__pycache__/bot.cpython-311.pyc
