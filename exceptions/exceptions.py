@@ -1,0 +1,3 @@
+
+class OrderException(BaseException):
+    pass
