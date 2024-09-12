@@ -1,5 +1,6 @@
-**/__pycache__
-__pycache__
-logs/logs.log
 .venv/
-__pycache__/bot.cpython-311.pyc
+__pycache__/
+.env
+setup/
+tests/
+logs/logs.log
