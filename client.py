@@ -4,6 +4,8 @@ import logging
 from dotenv import load_dotenv
 import os
 import pandas as pd
+from exceptions import exceptions as e
+
 
 logging.basicConfig(level=logging.INFO, filename='logs/logs.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
 
@@ -37,13 +39,16 @@ class Client:
 
     def place_buy_order(self) -> None | FailedRequestError:
         try:
-            order = self.client.place_order(
-                category='spot',
-                symbol=self.symbol,
-                side='Buy',
-                orderType='Market',
-                qty=self.amount_buy,
-            )
+            if self.amount_buy >= 3.6:
+                order = self.client.place_order(
+                    category='spot',
+                    symbol=self.symbol,
+                    side='Buy',
+                    orderType='Market',
+                    qty=self.amount_buy,
+                )
+            else:
+                raise e.OrderException('Amount buy less than 3.6!')
         except FailedRequestError as e:
             logging.error(e)
             return f"ErrorCode: {e.status_code}"
@@ -78,4 +83,18 @@ class Client:
         dataframe = dataframe[::-1]
         dataframe['close'] = pd.to_numeric(dataframe['close'])
         return dataframe
+    
+    def get_actual_price(self, category: str = 'spot') -> dict | FailedRequestError:
+        orderbook = self.client.get_orderbook(symbol=self.symbol, category=category)
+        return float(orderbook.get('result').get('a')[0][0])
+    
+    def get_orders(self):
+        orders = self.client.get_order_history(category='spot')
+        return orders
 
+
+if __name__ == '__main__':
+    try:
+        Client('SOLUSDT', amount_buy=1).place_buy_order()
+    except Exception as e:
+        print(e)
