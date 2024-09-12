@@ -1,0 +1,8 @@
+{
+    "symbol" : "SOLUSDT",
+    "interval" : "5",
+    "amountBuy" : 3.6,
+    "buy_crypto" : false,
+    "step": 0.7,
+    "send_notify": false
+}
