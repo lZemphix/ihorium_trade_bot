@@ -31,10 +31,13 @@ class Client:
             get_balance = self.client.get_wallet_balance(accountType=self.accountType)['result']['list'][0]['coin']
             for n in range(len(get_balance)):
                 coin_values[get_balance[n].get('coin')] = (get_balance[n].get('walletBalance'))
-            return coin_values
-        except FailedRequestError as e:
+            if coin_values != {}:
+                return coin_values
+            else:
+                raise e.BalanceException('Balance is empty!')
+        except FailedRequestError:
             logging.error(e)
-            return f"ErrorCode: {e.status_code}"
+            return f"Error!"
 
 
     def place_buy_order(self) -> None | FailedRequestError:
@@ -95,6 +98,6 @@ class Client:
 
 if __name__ == '__main__':
     try:
-        Client('SOLUSDT', amount_buy=1).place_buy_order()
+        print(Client('SOLUSDT').get_balance())
     except Exception as e:
         print(e)

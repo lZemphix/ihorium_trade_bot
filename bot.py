@@ -73,8 +73,9 @@ class Bot:
         print(f'averating {price_now}')
         self.notify.trade_status(f'The bot bought again at price ~{price_now}')
         logging.debug(f'Buy again at {price_now}')
-        self.orders.add(self.orders.get_last_order())
         self.notify_status = False
+        time.sleep(10)
+        self.orders.add(self.orders.get_last_order())
 
 
     def close_position(self, price_now: float) -> tuple[int, bool]:
@@ -93,6 +94,7 @@ class Bot:
                 logging.info(f'buy was succesfuly. Orders: {orders_list}')
                 logging.info(f'Next buy at {price_now - self.step} or sell at {price_now + self.step}') 
                 self.notify.trade_status(f'The bot bought at price {price_now}')
+                time.sleep(10)
                 self.orders.add(self.orders.get_last_order())
 
     

@@ -4,3 +4,4 @@ __pycache__/
 setup/
 tests/
 logs/logs.log
+.envyar

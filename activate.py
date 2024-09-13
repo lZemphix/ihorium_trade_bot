@@ -13,8 +13,7 @@ if __name__ == '__main__':
     finally:
         if config.get('send_notify'):
             bot.notify.bot_status(f'starting reboot at {datetime.now()}')
-        print('reloading...')
-        time.sleep(5)
-        bot.start()
+        print('bot was stopped')
+        
    
         
