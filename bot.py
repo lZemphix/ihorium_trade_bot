@@ -2,7 +2,7 @@ import json
 import ta, time
 from client import Client
 import logging
-from modules.notify import Notify, FakeNotify
+from modules.telenotify import SendNotify
 from modules.orders_config import OrdersEdit
 
 class Bot:
@@ -25,7 +25,7 @@ class Bot:
         self.cli = Client(symbol=self.symbol, interval=self.interval, amount_buy=self.amount_buy)
 
         self.amount_buy = (float(Client(self.symbol).get_kline_dataframe().close.iloc[-1])*amount_buy)[:4] if buy_crypto else amount_buy
-        self.notify = Notify() if send_notify else FakeNotify()
+        self.notify = SendNotify(True) if send_notify else SendNotify(False)
         self.bot_status = True
         self.notify_status = False
         
@@ -45,7 +45,7 @@ class Bot:
                 
                 
                 #Первая покупка
-                if self.orders.qty() == 0:
+                if self.orders.get() is not None and self.orders.qty() == 0:
                     self.first_buy(self.orders.get(), price_now, balance, df)
        
                 #Последующие действия
@@ -55,7 +55,7 @@ class Bot:
                         self.close_position(price_now)
                         
                     #усреднениe
-                    if ta.momentum.rsi(df.close).iloc[-1] < 43:
+                    if ta.momentum.rsi(df.close).iloc[-1] < 40:
                         if (self.orders.get_last_order()- price_now) > self.step:
                             self.averaging(price_now)
 
@@ -64,15 +64,15 @@ class Bot:
                             self.not_enough_money_notify()
 
     def not_enough_money_notify(self):
-        self.notify.balance_status('Not enough money!')
+        self.notify.warning('Not enough money!')
         print('Not enough money!')
         self.notify_status = True
 
     def averaging(self, price_now: float):
         self.cli.place_buy_order()
         print(f'averating {price_now}')
-        self.notify.trade_status(f'The bot bought again at price ~{price_now}')
-        logging.debug(f'Buy again at {price_now}')
+        self.notify.bought(f'The bot bought again at price ~{price_now}')
+        logging.info(f'Buy again at {price_now}')
         self.notify_status = False
         time.sleep(10)
         self.orders.add(self.orders.get_last_order())
@@ -81,21 +81,22 @@ class Bot:
     def close_position(self, price_now: float) -> tuple[int, bool]:
         self.cli.place_sell_order()
         print(f'close positions {price_now}')
-        self.notify.trade_status(f'The bot sold at price ~{price_now}')
+        self.notify.sold(f'The bot sold at price ~{price_now}')
         logging.info(f'closing positions for {price_now}')
         self.orders.clear()
         self.notify_status = False
 
+
     def first_buy(self, orders_list: list, price_now: float, balance: str, df: str) -> int:
-        if ta.momentum.rsi(df.close).iloc[-1] < 43 and \
+        if ta.momentum.rsi(df.close).iloc[-1] < 40 and \
             float(balance.get('USDT')) > self.amount_buy:
                 self.cli.place_buy_order()
                 print(f'first_buy {price_now}')
                 logging.info(f'buy was succesfuly. Orders: {orders_list}')
                 logging.info(f'Next buy at {price_now - self.step} or sell at {price_now + self.step}') 
-                self.notify.trade_status(f'The bot bought at price {price_now}')
-                time.sleep(10)
+                self.notify.bought(f'The bot bought at price {price_now}')
                 self.orders.add(self.orders.get_last_order())
+                time.sleep(10)
 
     
 
@@ -112,6 +113,6 @@ bot = Bot(symbol=config.get('symbol'),
 
 if __name__ == '__main__':
     try:
-        print(OrdersEdit().get_last_order())
+        print(Client('SOLUSDT').get_balance())
     except Exception as e:
         print(e)
