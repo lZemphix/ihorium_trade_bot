@@ -3,5 +3,4 @@ __pycache__/
 .env
 setup/
 tests/
-logs/logs.log
 .envyar

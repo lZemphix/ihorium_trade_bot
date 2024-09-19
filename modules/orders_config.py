@@ -1,31 +1,36 @@
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from typing import Any
-from client import Client
+from client import Account, Market
 from exceptions import exceptions as e
 
 class OrdersEdit:
 
-    def __init__(self, path: str = 'config/orders.txt') -> None:
+    def __init__(self, path: str = 'config/.orders') -> None:
        self.path = path
-       self.cli = Client('SOLUSDT')
+
+       self.account = Account()
+       self.market = Market()
 
     def get_last_order(self) -> float:
-        if self.cli.get_orders().get('result').get('list')[0].get('side') == 'Buy':
-            last_order = self.cli.get_orders().get('result').get('list')[0].get('avgPrice')
-            return float(last_order)
-        else:
-            raise e.OrderException('Last order has a side "Sell"')
+        last_order = self.account.get_orders().get('result').get('list')[0].get('avgPrice')
+        return float(last_order)
+    
+    def get_open_orders(self) -> bool:
+        open_orders = self.account.client.get_open_orders(category='spot')
+        return False if open_orders.get('result').get('list') == [] else True
+        
 
-    def add(self, data: Any) -> str:
+
+    def add(self, data: Any) -> int:
         with open(self.path, 'a') as f:
             f.write(f'{str(data)}\n')
-        return 'Succesful!'
+        return 200
     
-    def clear(self) -> str:
+    def clear(self) -> int:
         with open(self.path, 'w') as f:
             pass
-        return 'Succesful!'
+        return 200
     
     def get(self) -> list[float]:
         with open(self.path, 'r') as f:
@@ -39,6 +44,7 @@ class OrdersEdit:
     def qty(self) -> int:
         orders = self.get()
         return len(orders)
+        
     
     def avg_order(self) -> float:
         avg = sum(self.get()) / self.qty()
@@ -49,6 +55,6 @@ orders = OrdersEdit()
 
 if __name__ == '__main__':
     try:
-        print(orders.avg_order())
+        orders.get_open_orders()
     except Exception as e:
         print(e)
