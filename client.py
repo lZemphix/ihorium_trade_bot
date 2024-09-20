@@ -59,6 +59,9 @@ class Account(Client):
     def __init__(self) -> None:
         super().__init__()
 
+    def get_open_positions(self):
+        open_pos = self.client.get_open_orders(category='spot').get('result').get('list')[0]
+        return open_pos
 
     def get_orders(self) -> tuple:
         orders = self.client.get_order_history(category='spot')
@@ -124,7 +127,8 @@ class Market(Client):
         try:
             order = self.client.cancel_order(
                 category='spot',
-                symbol=self.symbol
+                symbol=self.symbol,
+                orderLinkId = Account().get_open_positions().get('orderLinkId')
             )
         except FailedRequestError as e:
             logging.error(e)
@@ -133,7 +137,8 @@ class Market(Client):
 
 if __name__ == '__main__':
     try:
-        # print(graph.get_kline_dataframe())
+        # print(Account().get_open_positions())
+        Market().cancel_order()
         pass
     except Exception as e:
         print(e)

@@ -33,3 +33,6 @@
 19-09-2024 13:26:18 - INFO - bot was started
 19-09-2024 15:39:00 - ERROR - invalid request, please check your server timestamp or recv_window param. req_timestamp[1726742258598],server_timestamp[1726742339574],recv_window[5000] (ErrCode: 10002). Added 2.5 seconds to recv_window. 2 retries remain.
 19-09-2024 17:27:49 - INFO - bot was started
+19-09-2024 18:04:00 - INFO - bot was started
+20-09-2024 02:38:55 - INFO - Next buy at 142.38 or sell at 143.57999999999998
+20-09-2024 02:57:14 - INFO - Buy again at 142.2
