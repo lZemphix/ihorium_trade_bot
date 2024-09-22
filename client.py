@@ -53,6 +53,22 @@ class Graph(Client):
         dataframe['close'] = pd.to_numeric(dataframe['close'])
         return dataframe
     
+    def get_kline_4h(self):
+        try:
+            kline = self.client.get_kline(symbol=self.symbol, interval='240')
+            return kline
+        except FailedRequestError as e:
+            logging.error(e)
+            return f"ErrorCode: {e.status_code}"
+
+    def get_kline_dataframe_4h(self) -> pd.DataFrame:
+        dataframe = pd.DataFrame(self.get_kline_4h()['result']['list'])
+        dataframe.columns = ['time', 'open', 'high', 'low', 'close', 'volume', 'turnover']
+        dataframe.set_index('time', inplace=True)
+        dataframe.index = pd.to_numeric(dataframe.index, downcast='integer').astype('datetime64[ms]')    
+        dataframe = dataframe[::-1]
+        dataframe['close'] = pd.to_numeric(dataframe['close'])
+        return dataframe
     
 class Account(Client):
 

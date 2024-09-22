@@ -3,6 +3,8 @@
     "interval" : "5",
     "amountBuy" : 4,
     "RSI": 41,
-    "step": 0.6,
+    "stepBuy": 0.6,
+    "stepSell": 0.6,
+    "smartTrade": false,
     "send_notify": true
 }
