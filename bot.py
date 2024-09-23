@@ -130,11 +130,7 @@ class Bot:
 
 config = Bot.get_config()
 
-bot = Bot(symbol=config.get('symbol'), 
-          interval=config.get('interval'), 
-          amount_buy=config.get('amountBuy'),
-          stepBuy=config.get('step'),
-          send_notify=config.get('send_notify'))
+bot = Bot()
 
 if __name__ == '__main__':
     try:
