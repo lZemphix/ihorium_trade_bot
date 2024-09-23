@@ -128,7 +128,7 @@ class Market(Client):
                 symbol=self.symbol,
                 side='Sell',
                 orderType='Limit',
-                price=price,
+                price=round(price, 2),
                 qty=amount
             )
         except FailedRequestError as e:
