@@ -49,11 +49,11 @@ class Bot:
         df = self.graph.get_kline_dataframe()
         df_4h = self.graph.get_kline_dataframe_4h()
         balance = self.account.get_balance()
+        price_now = self.market.get_actual_price()
 
         if ta.momentum.rsi(df.close).iloc[-1] < self.RSI and \
             float(balance.get('USDT')) > self.amount_buy and \
                 ((ta.momentum.rsi(df_4h.close).iloc[-1] <= 55) if self.smart_trade else True):
-                price_now = self.market.get_actual_price()
 
                 self.market.place_buy_order()
                 time.sleep(3)
@@ -71,12 +71,12 @@ class Bot:
     def averaging(self) -> None:
         df = self.graph.get_kline_dataframe()
         df_4h = self.graph.get_kline_dataframe_4h()
+        price_now = self.market.get_actual_price()
 
         if ta.momentum.rsi(df.close).iloc[-1] < self.RSI:
             if (self.orders.get_last_order()- price_now) > self.stepBuy and\
                 ((ta.momentum.rsi(df_4h.close).iloc[-1] <= 55) if self.smart_trade else True):
                 #Ready (need to be tested)
-                price_now = self.market.get_actual_price()
                 self.market.place_buy_order()
                 time.sleep(3)
 
