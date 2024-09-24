@@ -19,6 +19,7 @@ class Bot:
         self.stepSell = self.get_config().get('stepSell')
         self.send_notify = self.get_config().get('send_notify')
         self.RSI = self.get_config().get('RSI')
+        self.smart_trade = self.get_config().get('smartTrade')
         
         self.orders = OrdersEdit()
         self.account = Account()
@@ -29,8 +30,8 @@ class Bot:
         self.notify = SendNotify(True) if self.send_notify else SendNotify(False)
         self.sell_position = False
         self.bot_status = True
-        self.notify_status = False
-        self.smart_trade = self.get_config().get('smartTrade')
+        self.nem_notify_status = False
+        self.sell_notify_status = True
         
     @staticmethod
     def get_config() -> dict:
@@ -42,7 +43,17 @@ class Bot:
         #Ready
         self.notify.warning('Not enough money!')
         print('Not enough money!')
-        self.notify_status = True
+        self.nem_notify_status = True
+    
+    def sell_notify(self) -> None:
+        if not self.orders.get_open_orders() and self.sell_notify_status == True:
+            try:
+                close_price = self.orders.avg_order() + self.stepSell
+                self.notify.sold(f'Bot close the position at {close_price}')
+                self.sell_notify_status = False
+            except ZeroDivisionError:
+                self.notify.bot_status('Sell notifies activated')
+                self.sell_notify_status = False
 
     def first_buy(self) -> int:
         #Ready
@@ -63,6 +74,7 @@ class Bot:
                 sell_price = self.orders.avg_order() + self.stepSell
                 self.market.place_sell_order(sell_price)
                 self.sell_position = True
+                self.sell_notify_status = True
 
                 print(f'first_buy {price_now}')
                 logging.info(f'Next buy at {price_now - self.stepBuy} or sell at {price_now + self.stepBuy}') 
@@ -84,13 +96,14 @@ class Bot:
                 print(f'averating {price_now}')
                 self.notify.bought(f'The bot bought again at price ~{price_now}')
                 logging.info(f'Buy again at {price_now}')
-                self.notify_status = False
+                self.nem_notify_status = False
 
                 self.market.cancel_order()
 
                 sell_price = self.orders.avg_order() + self.stepSell
                 self.market.place_sell_order(sell_price)
                 self.sell_position = True
+                self.sell_notify_status = True
 
 
 
@@ -103,16 +116,13 @@ class Bot:
         while self.bot_status:
                 time.sleep(1)
                 self.sell_position = self.orders.get_open_orders()
-
                 if self.sell_position == False:
                     self.orders.clear()
 
                 balance = self.account.get_balance()
                 price_now = self.market.get_actual_price()
                 df = self.graph.get_kline_dataframe()
-                
-                # умная тоговля
-                
+                self.sell_notify()
 
                 #Первая покупка
                 if self.orders.get() is not None and self.orders.qty() == 0:
@@ -123,7 +133,7 @@ class Bot:
                     self.averaging()
 
                 if self.orders.qty() != 0 and float(balance.get('USDT')) < self.amount_buy:
-                    if self.notify_status == False:
+                    if self.nem_notify_status == False:
                             self.not_enough_money_notify()
     
 

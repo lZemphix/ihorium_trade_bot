@@ -75,14 +75,15 @@ class Account(Client):
     def __init__(self) -> None:
         super().__init__()
 
-    def get_open_positions(self):
-        open_pos = self.client.get_open_orders(category='spot').get('result').get('list')[0]
-        return open_pos
-
     def get_orders(self) -> tuple:
         orders = self.client.get_order_history(category='spot')
         return orders
     
+    def get_open_positions(self) -> bool:
+        open_orders = self.client.get_open_orders(category='spot')
+        return open_orders.get('result').get('list')[0]
+
+
     def get_balance(self) -> dict:   
         try:
             coin_values: dict[str, dict[float]] = {}
@@ -154,7 +155,7 @@ class Market(Client):
 if __name__ == '__main__':
     try:
         # print(Account().get_open_positions())
-        Market().cancel_order()
+        
         pass
     except Exception as e:
         print(e)
