@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import ta, time
 
@@ -105,7 +106,36 @@ class Bot:
                 self.sell_position = True
                 self.sell_notify_status = True
 
-
+    def add_profit(self):
+        with open('config/profit.json', 'r') as f:
+            try:
+                config = json.load(f)
+                last_date = datetime.strptime(config.get('SOLUSDT')[-1].get('date'), '%Y-%m-%d %H:%M:%S')
+                if (datetime.now() - last_date).total_seconds() > 86400:
+                    get_balance = self.account.get_balance()
+                    balance_usdt =float( get_balance.get('USDT'))
+                    balance_sol = float(get_balance.get('SOL')) * self.market.get_actual_price()
+                    balance = round(balance_sol + balance_usdt, 2)
+                    new_day = {
+                        'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                        'balance': balance,
+                        'profit': round(balance - config.get('SOLUSDT')[-1].get('balance'), 2)
+                    }
+                    config.get('SOLUSDT').append(new_day)
+                    with open('config/profit.json', 'w') as f:
+                        json.dump(config, f, indent=4)
+            except:
+                get_balance = self.account.get_balance()
+                balance_usdt =float( get_balance.get('USDT'))
+                balance_sol = float(get_balance.get('SOL')) * self.market.get_actual_price()
+                balance = round(balance_sol + balance_usdt, 2)
+                first_day = {'SOLUSDT': [{
+                        'date': f"{datetime.now().strftime('%Y-%m-%d')} 23:59:00",
+                        'balance': balance,
+                        'profit': round(0, 2)
+                    }]}
+                with open('config/profit.json', 'w') as f:
+                        json.dump(first_day, f, indent=4)
 
     def start(self) -> None:
         """Buy - USDT, sell - SOL"""
@@ -114,6 +144,7 @@ class Bot:
         logging.info('bot was started')
         
         while self.bot_status:
+                self.add_profit()
                 time.sleep(1)
                 self.sell_position = self.orders.get_open_orders()
                 if self.sell_position == False:
