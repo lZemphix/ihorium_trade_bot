@@ -8,7 +8,7 @@ import pandas as pd
 from exceptions import exceptions as e
 
 
-logging.basicConfig(level=logging.INFO, filename='logs/logs.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
+logging.basicConfig(level=logging.INFO, filename='logs/logs.log', filemode='w', format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
 
 load_dotenv()
 
