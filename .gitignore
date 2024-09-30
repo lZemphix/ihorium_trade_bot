@@ -5,3 +5,4 @@ setup/
 tests/
 .envyar
 logs
+report.xlsx
