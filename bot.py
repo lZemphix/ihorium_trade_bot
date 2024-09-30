@@ -26,19 +26,18 @@ class Bot:
         self.account = Account()
         self.market = Market()
         self.graph = Graph()
-        self.notify_send = NotifySettings(True, True, True) #for clean code (if u need, u can use it)
-
         self.notify = SendNotify(True) if self.send_notify else SendNotify(False)
+
         self.sell_position = False
         self.bot_status = True
         self.nem_notify_status = False
         self.sell_notify_status = True
+        self.laps = 0
         
     @staticmethod
     def get_config() -> dict:
         with open('config/bot_config.json', 'r') as f:
             return json.load(f)
-         
 
     def not_enough_money_notify(self) -> None:
         #Ready
@@ -51,10 +50,11 @@ class Bot:
             try:
                 close_price = self.orders.avg_order() + self.stepSell
                 self.notify.sold(f'Bot close the position at {close_price}')
-                self.sell_notify_status = False
             except ZeroDivisionError:
-                self.notify.bot_status('Sell notifies activated')
-                self.sell_notify_status = False
+                self.notify.sold('bot close the position')
+
+            self.sell_notify_status = False
+            self.laps += 1
 
     def first_buy(self) -> int:
         #Ready
@@ -119,6 +119,7 @@ class Bot:
                     new_day = {
                         'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                         'balance': balance,
+                        'laps': self.laps,
                         'profit': round(balance - config.get('SOLUSDT')[-1].get('balance'), 2)
                     }
                     config.get('SOLUSDT').append(new_day)
@@ -132,7 +133,8 @@ class Bot:
                 first_day = {'SOLUSDT': [{
                         'date': f"{datetime.now().strftime('%Y-%m-%d')} 23:59:00",
                         'balance': balance,
-                        'profit': round(0, 2)
+                        'laps': 0,
+                        'profit': 0.0
                     }]}
                 with open('config/profit.json', 'w') as f:
                         json.dump(first_day, f, indent=4)
@@ -167,14 +169,6 @@ class Bot:
                     if self.nem_notify_status == False:
                             self.not_enough_money_notify()
     
-
-
-config = Bot.get_config()
-
 bot = Bot()
 
-if __name__ == '__main__':
-    try:
-        pass
-    except Exception as e:
-        print(e)
+config = bot.get_config()
