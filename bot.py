@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 import ta, time
-
+from modules.laps_config import laps
 import ta.momentum
 from client import Account, Market, Graph
 import logging
@@ -26,13 +26,13 @@ class Bot:
         self.account = Account()
         self.market = Market()
         self.graph = Graph()
+        self.laps = laps
         self.notify = SendNotify(True) if self.send_notify else SendNotify(False)
 
         self.sell_position = False
         self.bot_status = True
         self.nem_notify_status = False
         self.sell_notify_status = True
-        self.laps = 0
         
     @staticmethod
     def get_config() -> dict:
@@ -54,7 +54,7 @@ class Bot:
                 self.notify.sold('bot close the position')
 
             self.sell_notify_status = False
-            self.laps += 1
+            self.laps.add(self.laps.calculate_profit())
 
     def first_buy(self) -> int:
         #Ready
@@ -107,6 +107,7 @@ class Bot:
                 self.sell_notify_status = True
 
     def add_profit(self):
+        
         with open('config/profit.json', 'r') as f:
             try:
                 config = json.load(f)
@@ -119,7 +120,7 @@ class Bot:
                     new_day = {
                         'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                         'balance': balance,
-                        'laps': self.laps,
+                        'laps': self.laps.qty(),
                         'profit': round(balance - config.get('SOLUSDT')[-1].get('balance'), 2)
                     }
                     config.get('SOLUSDT').append(new_day)
@@ -150,12 +151,9 @@ class Bot:
                 time.sleep(1)
                 self.sell_position = self.orders.get_open_orders()
                 if self.sell_position == False:
+                    self.sell_notify()
                     self.orders.clear()
-
                 balance = self.account.get_balance()
-                price_now = self.market.get_actual_price()
-                df = self.graph.get_kline_dataframe()
-                self.sell_notify()
 
                 #Первая покупка
                 if self.orders.get() is not None and self.orders.qty() == 0:
