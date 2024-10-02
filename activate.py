@@ -1,15 +1,22 @@
+from requests import Session
+from modules.telenotify import polling
+from modules.profit_calc import profit
 from datetime import datetime
 from bot import bot, config
 import traceback
-from modules.telenotify import polling
 import threading
 import logging
-from modules.profit_calc import profit
+from requests.adapters import Retry, HTTPAdapter
 
 if __name__ == '__main__':
+    session = Session()
+    retries = Retry(total=50)
+    session.mount('https://', HTTPAdapter(max_retries=retries))
+    
     try:
+        
         threading.Thread(target=bot.start).start()
-        threading.Thread(target=polling.update(profit.send_file)).start()
+        # threading.Thread(target=polling.update(profit.send_file)).start()
         
     except Exception as e:
         print('err', traceback.format_exc())
