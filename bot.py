@@ -139,6 +139,7 @@ class Bot:
                     }]}
                 with open('config/profit.json', 'w') as f:
                         json.dump(first_day, f, indent=4)
+            self.laps.clear()
 
     def start(self) -> None:
         """Buy - USDT, sell - SOL"""
