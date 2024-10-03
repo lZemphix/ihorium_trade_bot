@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import json
 import time
 import pandas as pd
@@ -22,9 +25,12 @@ class Profit:
         df = self.create_df()
         df.to_excel('report.xlsx')
         time.sleep(3)
+        self.notify.bot_status('Generating report...')
         status_code = self.notify.send_file('report.xlsx')
         return status_code
+    
 profit = Profit()
+
 if __name__ == '__main__':
     # try:
         print(Profit().create_df())
