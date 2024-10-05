@@ -50,11 +50,11 @@ class Bot:
             try:
                 close_price = self.orders.avg_order() + self.stepSell
                 self.notify.sold(f'Bot close the position at {close_price}')
+                self.laps.add(self.laps.calculate_profit())
             except ZeroDivisionError:
-                self.notify.sold('bot close the position')
+                pass
 
             self.sell_notify_status = False
-            self.laps.add(self.laps.calculate_profit())
 
     def first_buy(self) -> int:
         #Ready
@@ -107,7 +107,6 @@ class Bot:
                 self.sell_notify_status = True
 
     def add_profit(self):
-        
         with open('config/profit.json', 'r') as f:
             try:
                 config = json.load(f)
@@ -123,9 +122,12 @@ class Bot:
                         'laps': self.laps.qty(),
                         'profit': round(balance - config.get('SOLUSDT')[-1].get('balance'), 2)
                     }
+                    self.laps.clear()
                     config.get('SOLUSDT').append(new_day)
                     with open('config/profit.json', 'w') as f:
                         json.dump(config, f, indent=4)
+
+                    
             except:
                 get_balance = self.account.get_balance()
                 balance_usdt =float( get_balance.get('USDT'))
@@ -139,7 +141,7 @@ class Bot:
                     }]}
                 with open('config/profit.json', 'w') as f:
                         json.dump(first_day, f, indent=4)
-            self.laps.clear()
+                        self.laps.clear()
 
     def start(self) -> None:
         """Buy - USDT, sell - SOL"""
