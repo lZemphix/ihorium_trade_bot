@@ -6,3 +6,4 @@ tests/
 .envyar
 logs/
 report.xlsx
+config/*
