@@ -16,10 +16,6 @@ class Client:
 
 
     def __init__(self) -> None:
-        """symbol: 'SOLUSDT' for example
-        interval: 1,5,10,15,30,60
-        amount_buy: min. 3.6
-        """
         with open('config/bot_config.json', 'r') as f:
             config = json.load(f)
 

@@ -59,13 +59,11 @@ class Bot:
     def first_buy(self) -> int:
         #Ready
         df = self.graph.get_kline_dataframe()
-        df_4h = self.graph.get_kline_dataframe_4h()
         balance = self.account.get_balance()
         price_now = self.market.get_actual_price()
 
         if ta.momentum.rsi(df.close).iloc[-1] < self.RSI and \
-            float(balance.get('USDT')) > self.amount_buy and \
-                ((ta.momentum.rsi(df_4h.close).iloc[-1] <= 55) if self.smart_trade else True):
+            float(balance.get('USDT')) > self.amount_buy:
 
                 self.market.place_buy_order()
                 time.sleep(3)
@@ -83,13 +81,10 @@ class Bot:
 
     def averaging(self) -> None:
         df = self.graph.get_kline_dataframe()
-        df_4h = self.graph.get_kline_dataframe_4h()
         price_now = self.market.get_actual_price()
 
         if ta.momentum.rsi(df.close).iloc[-1] < self.RSI:
-            if (self.orders.get_last_order()- price_now) > self.stepBuy and\
-                ((ta.momentum.rsi(df_4h.close).iloc[-1] <= 55) if self.smart_trade else True):
-                #Ready (need to be tested)
+            if (self.orders.get_last_order()- price_now) > self.stepBuy:
                 self.market.place_buy_order()
                 time.sleep(3)
 
@@ -106,49 +101,40 @@ class Bot:
                 self.sell_position = True
                 self.sell_notify_status = True
 
+    def write_profit(self, balance: int, date: datetime, laps_: int = 0, profit: float = 0.0):
+        new_day = {
+                        'date': date,
+                        'balance': balance,
+                        'laps': laps_,
+                        'profit': profit
+                    }
+        self.laps.clear()
+        config.get('SOLUSDT').append(new_day)
+        with open('config/profit.json', 'w') as f:
+            json.dump(config, f, indent=4)
+
     def add_profit(self):
         with open('config/profit.json', 'r') as f:
+            get_balance = self.account.get_balance()
+            balance_usdt =float(get_balance.get('USDT'))
+            balance_sol = float(get_balance.get('SOL')) * self.market.get_actual_price()
+            balance = round(balance_sol + balance_usdt, 2)
             try:
                 config = json.load(f)
                 last_date = datetime.strptime(config.get('SOLUSDT')[-1].get('date'), '%Y-%m-%d %H:%M:%S')
                 if (datetime.now() - last_date).total_seconds() > 86400:
-                    get_balance = self.account.get_balance()
-                    balance_usdt =float( get_balance.get('USDT'))
-                    balance_sol = float(get_balance.get('SOL')) * self.market.get_actual_price()
-                    balance = round(balance_sol + balance_usdt, 2)
-                    new_day = {
-                        'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                        'balance': balance,
-                        'laps': self.laps.qty(),
-                        'profit': round(balance - config.get('SOLUSDT')[-1].get('balance'), 2)
-                    }
-                    self.laps.clear()
-                    config.get('SOLUSDT').append(new_day)
-                    with open('config/profit.json', 'w') as f:
-                        json.dump(config, f, indent=4)
-
-                    
+                    date = datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    profit = round(sum(self.laps.get()), 3)
+                    self.write_profit(balance, date, laps.qty(), profit)
             except:
-                get_balance = self.account.get_balance()
-                balance_usdt =float( get_balance.get('USDT'))
-                balance_sol = float(get_balance.get('SOL')) * self.market.get_actual_price()
-                balance = round(balance_sol + balance_usdt, 2)
-                first_day = {'SOLUSDT': [{
-                        'date': f"{datetime.now().strftime('%Y-%m-%d')} 23:59:00",
-                        'balance': balance,
-                        'laps': 0,
-                        'profit': 0.0
-                    }]}
-                with open('config/profit.json', 'w') as f:
-                        json.dump(first_day, f, indent=4)
-                        self.laps.clear()
+                date = f"{datetime.now().strftime('%Y-%m-%d')} 23:59:00"
+                self.write_profit(balance, date, 0, 0.0)
 
-    def start(self) -> None:
-        """Buy - USDT, sell - SOL"""
+        
+    def start(self):
         self.notify.bot_status(f'Bot started trading on pair {self.symbol}')
         print('bot was started')
         logging.info('bot was started')
-        
         while self.bot_status:
                 self.add_profit()
                 time.sleep(1)
