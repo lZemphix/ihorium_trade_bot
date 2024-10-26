@@ -53,6 +53,6 @@ laps = LapsEdit()
 
 if __name__ == '__main__':
     try:
-        print(laps.calculate_profit())
+        print(sum(laps.get()))
     except Exception as e:
         print(e)
