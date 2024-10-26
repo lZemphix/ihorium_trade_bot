@@ -10,13 +10,12 @@ from requests.adapters import Retry, HTTPAdapter
 
 if __name__ == '__main__':
     session = Session()
-    retries = Retry(total=50)
+    retries = Retry(total=9999)
     session.mount('https://', HTTPAdapter(max_retries=retries))
     
     try:
         
         threading.Thread(target=bot.start).start()
-        # threading.Thread(target=polling.update(profit.send_file)).start()
         
     except Exception as e:
         print('err', traceback.format_exc())
