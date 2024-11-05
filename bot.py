@@ -102,16 +102,16 @@ class Bot:
                 self.sell_notify_status = True
 
     def write_profit(self, balance: int, date: datetime, laps_: int = 0, profit: float = 0.0):
-        new_day = {
+        data = {'SOLUSDT': [{
                         'date': date,
                         'balance': balance,
                         'laps': laps_,
                         'profit': profit
-                    }
+                        }
+                    ]}
         self.laps.clear()
-        config.get('SOLUSDT').append(new_day)
-        with open('config/profit.json', 'w') as f:
-            json.dump(config, f, indent=4)
+        with open('config/profit.json', 'a') as f:
+            json.dump(data, f, indent=4)
 
     def add_profit(self):
         with open('config/profit.json', 'r') as f:
